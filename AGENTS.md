@@ -72,6 +72,20 @@ actually have loaded via Load Unpacked — the repo root (which loads `src/`)
 or `convoso-auto-create-lead/`? Git history can't prove this; please confirm
 so the probably-legacy copy can be retired.
 
+## Current state & next steps
+
+- **Done (2026-09-22):** the dual-source-folder ambiguity investigated
+  and documented — see "Which source folder is canonical" above.
+- **Open:** Robert needs to confirm which folder `chrome://extensions`
+  actually has loaded (the question above). Once answered, a short
+  follow-up directive can retire the non-canonical copy.
+- No other known gaps as of 2026-09-22 — this repo has no automated
+  tests and no build step, so "done" here means "matches what's
+  manually verified against a real CRM disposition flow," not a green
+  CI run.
+- `DirectiveQueueMCP` tracks live/queued work in `docs/directives/` —
+  check there for anything newer than this note.
+
 ## Commands
 
 No build step or automated test suite was found. Load unpacked via
