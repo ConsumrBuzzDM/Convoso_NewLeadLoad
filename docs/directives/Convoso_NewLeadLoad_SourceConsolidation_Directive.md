@@ -27,20 +27,39 @@ Two real possibilities, and it matters which:
 
 ## Scope
 
-1. Determine which folder is actually in use. Check for any indication
-   (a README section, a note, or ask Robert directly if it can't be
-   determined from the repo alone) of which one gets loaded via
-   "Load Unpacked" in practice.
-2. Whichever is confirmed live: update `AGENTS.md` to state plainly
-   which folder is canonical and remove the "verify before editing"
-   hedge — replace it with a direct statement.
-3. Whichever is confirmed dead: do not delete it without Robert's
-   explicit go-ahead (it may still hold reference value or be
-   mid-transition) — but flag it clearly in `AGENTS.md` as legacy/not
-   loaded, so the ambiguity can't recur for the next person or agent.
-4. If genuinely undeterminable from the repo alone, stop and ask Robert
-   directly rather than guessing — this is exactly the kind of thing
-   AGENTS.md's own "Think before coding" section calls for.
+1. **Evidence already gathered (2026-09-22), start from this rather than
+   re-deriving it:** `git log --oneline --all` shows `9e240b4 feat: Add
+   Convoso Auto Create Lead extension with disposition monitoring and
+   auto-click functionality` — this is not an incidental edit to a stray
+   file, it's a deliberate commit adding a second, self-contained,
+   independently-named extension (its own `manifest.json` names it
+   "Convoso Auto Create Lead," distinct from the root's "Contact Center
+   Productivity Add-On"). Every real feature commit since
+   (`c1b121f`, `be5fbe3`) touched only that folder. The root `src/`
+   folder's last real touch predates the subfolder's creation. This is
+   strong circumstantial evidence `convoso-auto-create-lead/` is the
+   live, actively-developed one and root `src/` is superseded — but it
+   is not proof of what's actually loaded in Robert's browser right
+   now, which nothing in git can establish with certainty.
+2. Check for any additional indication (a README section, a note) beyond what's
+   summarized above.
+3. Whichever folder the evidence points to: update `AGENTS.md` to state
+   plainly which folder is *believed* canonical (cite the evidence),
+   remove the "verify before editing" hedge, and add a clearly-marked
+   `**OPEN QUESTION for Robert:**` line asking him to confirm which
+   folder `chrome://extensions` actually has loaded — do not word this
+   as settled fact merely because the git evidence is strong.
+4. Do not delete the non-canonical folder without Robert's explicit
+   go-ahead (it may still hold reference value or be mid-transition) —
+   flag it clearly in `AGENTS.md` as probably-legacy/not loaded, so the
+   ambiguity can't recur for the next person or agent.
+5. **This is a headless, non-interactive dispatch — there is no live
+   channel to "ask Robert" and get an answer back.** If the evidence
+   above still leaves it genuinely undeterminable, do not block waiting
+   for a response: write the open question clearly into `AGENTS.md` (per
+   step 3) and into your completion report, and stop there. Never guess
+   past what the evidence supports, and never treat "I can't get a live
+   answer" as license to just pick one.
 
 ## What NOT to do
 
@@ -53,10 +72,10 @@ Two real possibilities, and it matters which:
 
 ## Completion criteria
 
-- [ ] Confirmed which folder (`src/` or `convoso-auto-create-lead/`) is actually loaded/live
-- [ ] `AGENTS.md` updated to state this plainly, replacing the current hedge
-- [ ] The non-canonical folder flagged clearly as legacy, not silently removed
-- [ ] If undeterminable, the question is posed to Robert explicitly rather than guessed
+- [ ] `AGENTS.md` updated: states which folder the evidence points to (cite it), with an explicit `**OPEN QUESTION for Robert:**` line asking him to confirm against what's actually loaded in his browser — not worded as settled fact
+- [ ] The non-canonical folder flagged clearly as probably-legacy, not silently removed
+- [ ] No code merged, deleted, or rewritten in either folder
+- [ ] Completion report restates the open question plainly, does not claim it was resolved if it wasn't
 
 <!-- queue:start -->
 ## Queue
