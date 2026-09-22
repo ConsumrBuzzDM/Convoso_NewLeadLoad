@@ -2,6 +2,58 @@
 
 *Last updated: 2026-09-22 by robert-claude (Tower)*
 
+## Why these milestones
+
+The source-consolidation investigation already ran (Done) and left one Robert question - which folder chrome://extensions actually loads. The roadmap sequences exactly that: answer, retire the dead tree, then optionally a smoke-test harness.
+
+```yaml roadmap
+status: draft
+approved: ""
+reviewed: "2026-09-22"
+replan_after_days: 14
+stop_if: "Convoso auto-loads the next lead natively."
+milestones:
+  - id: M1
+    title: One canonical source tree
+    status: active
+    exit:
+      - grep: {path: "AGENTS.md", pattern: "canonical"}
+    steps:
+      - id: M1.1
+        title: Get Robert's answer on which folder is loaded, then retire the dead one
+        kind: refactor
+        size: S
+        value: 4
+        needs: []
+        status: pending
+        directive: ""
+        detail: convoso-auto-create-lead/ is believed canonical; if root src/ is
+          confirmed dead, delete or archive it and simplify AGENTS.md. Low risk,
+          well-scoped - it only waits on the chrome://extensions answer.
+        accept:
+          - grep: {path: "AGENTS.md", pattern: "canonical"}
+  - id: M2
+    title: Optional smoke-test harness
+    status: pending
+    exit:
+      - file: "test/"
+    steps:
+      - id: M2.1
+        title: Add a minimal extension smoke test if Robert wants one
+        kind: tests
+        size: M
+        value: 2
+        needs: [M1.1]
+        status: pending
+        directive: ""
+        detail: Zero automated verification is why the folder ambiguity went
+          unnoticed for months. A Puppeteer/Playwright smoke test would catch
+          injection/selector regressions - genuinely a judgment call whether a
+          repo this small is worth it; gated on Robert.
+        accept:
+          - file: "test/"
+```
+
 ## Purpose
 
 A Chrome MV3 extension that closes a real operational gap: after an agent
