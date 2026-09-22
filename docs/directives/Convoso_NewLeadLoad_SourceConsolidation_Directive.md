@@ -82,11 +82,16 @@ Two real possibilities, and it matters which:
 
 | Field | Value |
 |---|---|
-| Status | Draft |
+| Status | Done |
 | Assigned to | devin |
-| Branch | - |
+| Branch | directive/convoso-newleadload-convoso-newleadload-sourceconsolidation |
 | Base branch | main |
 
 **Status log**
 - 2026-09-22 · robert-claude · none → Draft — found via repo-triage research pass: root manifest.json points at src/, but every one of the last 5 commits (real feature work) only touched the separate, unreferenced convoso-auto-create-lead/ folder. AGENTS.md already flags this ambiguity but never resolves it.
+- 2026-09-22 10:06 · robert-claude · Draft → Queued — Fixed for headless dispatch safety (d454ce2): rewrote the "ask Robert" step to record an open question instead of blocking, added git-evidence pointing at convoso-auto-create-lead/ as likely-canonical. Robert: full bypass auto-approval.
+- 2026-09-22 10:06 · robert-claude · Queued → Approved
+- 2026-09-22 10:06 · dispatcher · Approved → In progress — dispatched devin in C:\Github\.worktrees\Convoso_NewLeadLoad--convoso-newleadload-convoso-newleadload-sourceconsolidation
+- 2026-09-22 10:09 · devin · In progress → Review — AGENTS.md updated (commit cbb4c40): convoso-auto-create-lead/ stated as believed canonical with cited evidence (commit 9e240b4 created it as self-contained Convoso-scoped extension; every commit since touched only it; its own README instructs Load Unpacked at that folder; root src/ untouched since 2025-11-21). Root src/ + root manifest.json flagged probably-legacy, nothing deleted or modified in either folder. OPEN QUESTION for Robert recorded in AGENTS.md and restated here: which folder does chrome://extensions actually have loaded via Load Unpacked — repo root (src/) or convoso-auto-create-lead/? Not resolved; git evidence cannot prove it.
+- 2026-09-22 10:15 · robert-claude · Review → Done
 <!-- queue:end -->
