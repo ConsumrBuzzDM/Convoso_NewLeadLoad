@@ -11,44 +11,84 @@ all of Robert's repos.
 ## Project
 
 Chrome Extension (MV3) that automates the transition to a new lead after a
-disposition screen closes in a CRM. Monitors the CRM interface and
-auto-clicks "New Lead" if one doesn't load automatically after a call
-disposition. Runs on `<all_urls>` via a content script — CSS selectors and
-timing are configurable to match different CRM layouts.
+disposition screen closes in a CRM. The repo contains two extension source
+trees (see "Which source folder is canonical" below):
+
+- `convoso-auto-create-lead/` — "Convoso Auto Create Lead," scoped to
+  `*.convoso.com`; auto-clicks "Create Lead" after a disposition. Believed
+  canonical.
+- root `manifest.json` + `src/` — "Contact Center Productivity Add-On," a
+  generic version on `<all_urls>` with configurable selectors. Probably
+  legacy.
 
 - **Language:** JavaScript (Chrome MV3, no build step)
-- **Permissions:** `storage`, `scripting`; `host_permissions: <all_urls>`
+- **Permissions:** canonical: `storage`, `activeTab`,
+  `host_permissions: *://*.convoso.com/*`; legacy root: `storage`,
+  `scripting`, `host_permissions: <all_urls>`
 
 ## Repo layout
 
 ```
-manifest.json                    MV3 manifest
-src/
+convoso-auto-create-lead/        believed-canonical extension source (see below)
+  manifest.json                  own MV3 manifest — "Convoso Auto Create Lead",
+                                 host_permissions scoped to *://*.convoso.com/*
+  content.js                     content script — core detection/click logic
+  background.js                  service worker (state management)
+  popup.html / popup.js          extension popup UI
+  styles.css                     popup styling
+  README.md                      subfolder docs — instructs Load Unpacked at
+                                 this folder
+manifest.json                    root MV3 manifest ("Contact Center
+                                 Productivity Add-On") — probably legacy
+src/                             root extension source — probably legacy
   background/service-worker.js   background service worker
-  content/content.js             content script — core detection/click logic
-  options/
-    popup.html / popup.js        extension popup UI
-    options.html / options.js    settings page
-    help.html                   help documentation
-  assets/                        icons (16/48/128)
-docs/SDD.md                      Software Design Document
-convoso-auto-create-lead/        possible alternate/legacy source copy — verify before editing
+  content/content.js             content script
+  options/                       popup, settings page, help docs
+docs/                            SDD + agent directives
 ```
+
+### Which source folder is canonical
+
+`convoso-auto-create-lead/` is **believed canonical** — the extension Robert
+actually develops and most likely has loaded via Load Unpacked. Evidence:
+
+- Commit `9e240b4` (2025-12-05) deliberately added it as a self-contained,
+  independently-named extension ("Convoso Auto Create Lead") scoped to
+  `*://*.convoso.com/*` — the CRM this repo actually targets.
+- Every commit since (`c1b121f`, `be5fbe3`, `31d5940`, `502f537`) touched
+  only that folder, including real feature work.
+- Its own `README.md` instructs "Load unpacked → select the
+  `convoso-auto-create-lead` folder."
+- Root `src/` was last touched 2025-11-21 — before the subfolder existed.
+
+The root `manifest.json` + `src/` ("Contact Center Productivity Add-On") are
+**probably legacy**: not referenced by the actively-developed extension and
+not updated since the subfolder was created. Kept in place pending Robert's
+confirmation — do not delete, but do not land new work there unless Robert
+says the root extension is what's actually loaded.
+
+**OPEN QUESTION for Robert:** which folder does `chrome://extensions`
+actually have loaded via Load Unpacked — the repo root (which loads `src/`)
+or `convoso-auto-create-lead/`? Git history can't prove this; please confirm
+so the probably-legacy copy can be retired.
 
 ## Commands
 
 No build step or automated test suite was found. Load unpacked via
-`chrome://extensions/` → Developer mode → Load unpacked to test changes.
+`chrome://extensions/` → Developer mode → Load unpacked, pointed at
+`convoso-auto-create-lead/` (believed canonical — see above), to test
+changes.
 
 ## Conventions
 
-- **CSS selectors are configuration, not hardcoded logic.** The extension
-  is designed to be retargeted at different CRMs via configurable
-  selectors and timing delays — keep new detection logic consistent with
-  that pattern rather than hardcoding a single CRM's DOM.
-- `<all_urls>` host permission is broad by design (it needs to work on
-  whatever CRM the operator points it at) — don't narrow it without
-  confirming that's intended, since it would break the "any CRM" use case.
+- **`convoso-auto-create-lead/` (believed canonical):** Convoso-specific by
+  design — selectors and timing live in the `CONFIG` block at the top of
+  `content.js`; host permissions are scoped to `*://*.convoso.com/*`.
+  Keep new detection logic in that `CONFIG`-driven pattern.
+- **Root `src/` (probably legacy):** built as a generic, retargetable
+  extension — CSS selectors are configuration, and `<all_urls>` host
+  permission is broad by design. Don't narrow it without confirming intent;
+  it would break the "any CRM" use case if this copy is ever revived.
 
 ---
 
@@ -100,14 +140,19 @@ against actual pasted output. Concretely:
 
 ## Documentation files
 
-- `README.md` — overview, features, project structure, installation
-- `docs/SDD.md` — Software Design Document
+- `README.md` — overview of the root extension (probably legacy)
+- `convoso-auto-create-lead/README.md` — docs for the believed-canonical
+  extension
+- `docs/Software Design Document (SDD)_ Contact Center Productivity
+  Add-On.md` — SDD for the root extension
 - `AGENTS.md` — this file
 
 ## Common pitfalls
 
-1. **Two possible source locations** (`src/` at root vs.
-   `convoso-auto-create-lead/`) — confirm which is the active extension
-   source before editing.
+1. **Two source folders, one believed canonical.** Edit
+   `convoso-auto-create-lead/` for real work; root `src/` + root
+   `manifest.json` are probably legacy (see "Which source folder is
+   canonical" above). Don't delete either until Robert confirms what's
+   loaded in his browser.
 2. **No automated tests.** Manually verify against a real CRM disposition
    flow before calling a change done.
