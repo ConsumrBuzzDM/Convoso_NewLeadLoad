@@ -37,3 +37,17 @@ One canonical source tree; agents never again guess which folder is live.
 
 - `AGENTS.md` (canonical-folder section), `docs/ROADMAP.md` (yaml roadmap
   block), the consolidation directive (Done).
+
+```yaml direction
+version: 1
+answered: 2026-09-25 robert-claude-tower
+purpose: Automates importing prepared lead lists into the Convoso dialer.
+done_when:
+- Imports land with correct fields and lists, with counts verified.
+do_not:
+- Never mutate the live dialer without an explicit order
+- read-safe by default.
+audience: work
+hours_per_week: <1
+stakes: high
+```
